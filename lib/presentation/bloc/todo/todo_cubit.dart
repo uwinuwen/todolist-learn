@@ -55,7 +55,7 @@ class TodoCubit(
   }
 
   void toggleTodo(TodoEntity todo) async {
-    final result = await _addTodoUseCase(todo);
+    final result = await _updateTodoUseCase(todo);
     result.when(
       success: (_) => null,
       failure: (error) => TodoState.error(error.message),
