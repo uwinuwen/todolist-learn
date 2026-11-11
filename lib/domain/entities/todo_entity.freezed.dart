@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TodoEntity {
 
- int get id; String get title; bool get isCompleted;
+ int? get id; String get title; bool get isCompleted;
 /// Create a copy of TodoEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -51,7 +51,7 @@ abstract mixin class $TodoEntityCopyWith<$Res>  {
   factory $TodoEntityCopyWith(TodoEntity value, $Res Function(TodoEntity) _then) = _$TodoEntityCopyWithImpl;
 @useResult
 $Res call({
- int id, String title, bool isCompleted
+ int? id, String title, bool isCompleted
 });
 
 
@@ -68,10 +68,10 @@ class _$TodoEntityCopyWithImpl<$Res>
 
 /// Create a copy of TodoEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? isCompleted = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? title = null,Object? isCompleted = null,}) {
   return _then(TodoEntity(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String title,  bool isCompleted)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String title,  bool isCompleted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TodoEntity() when $default != null:
 return $default(_that.id,_that.title,_that.isCompleted);case _:
@@ -179,7 +179,7 @@ return $default(_that.id,_that.title,_that.isCompleted);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  bool isCompleted)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String title,  bool isCompleted)  $default,) {final _that = this;
 switch (_that) {
 case _TodoEntity():
 return $default(_that.id,_that.title,_that.isCompleted);case _:
@@ -199,7 +199,7 @@ return $default(_that.id,_that.title,_that.isCompleted);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String title,  bool isCompleted)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String title,  bool isCompleted)?  $default,) {final _that = this;
 switch (_that) {
 case _TodoEntity() when $default != null:
 return $default(_that.id,_that.title,_that.isCompleted);case _:
@@ -214,10 +214,10 @@ return $default(_that.id,_that.title,_that.isCompleted);case _:
 
 
 class _TodoEntity implements TodoEntity {
-  const _TodoEntity({required this.id, required this.title, this.isCompleted = false});
+  const _TodoEntity({this.id, required this.title, this.isCompleted = false});
   
 
-@override final  int id;
+@override final  int? id;
 @override final  String title;
 @override@JsonKey() final  bool isCompleted;
 
@@ -253,7 +253,7 @@ abstract mixin class _$TodoEntityCopyWith<$Res> implements $TodoEntityCopyWith<$
   factory _$TodoEntityCopyWith(_TodoEntity value, $Res Function(_TodoEntity) _then) = __$TodoEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String title, bool isCompleted
+ int? id, String title, bool isCompleted
 });
 
 
@@ -270,10 +270,10 @@ class __$TodoEntityCopyWithImpl<$Res>
 
 /// Create a copy of TodoEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? isCompleted = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? title = null,Object? isCompleted = null,}) {
   return _then(_TodoEntity(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
