@@ -11,18 +11,19 @@ import 'package:todolist_learn/domain/usecases/update_todo_use_case.dart';
 part 'todo_state.dart';
 part 'todo_cubit.freezed.dart';
 
-class TodoCubit(
-  super.initialState, {
+class TodoCubit({
   required final FetchTodoUseCase _fetchTodoUseCase,
   required final AddTodoUseCase _addTodoUseCase,
   required final DeleteTodoUseCase _deleteTodoUseCase,
   required final UpdateTodoUseCase _updateTodoUseCase,
 }) extends Cubit<TodoState> {
-  void loading() {
-    TodoState.loading();
-  }
+  this : super(const TodoState.initial());
 
   void fetchTodos() async {
+    if (state is _Initial) {
+      TodoState.loading();
+    }
+    // const Duration(seconds: 3);
     final todos = await _fetchTodoUseCase();
     todos.when(
       success: (todos) => TodoState.loaded(todos),
