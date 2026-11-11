@@ -14,8 +14,12 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
     'id',
     aliasedName,
     false,
+    hasAutoIncrement: true,
     type: DriftSqlType.int,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
   );
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
@@ -35,10 +39,11 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
     aliasedName,
     false,
     type: DriftSqlType.bool,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("is_completed" IN (0, 1))',
     ),
+    defaultValue: const Constant(false),
   );
   @override
   List<GeneratedColumn> get $columns => [id, title, isCompleted];
@@ -56,8 +61,6 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -75,14 +78,12 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
           _isCompletedMeta,
         ),
       );
-    } else if (isInserting) {
-      context.missing(_isCompletedMeta);
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Todo map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -195,32 +196,25 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   final Value<int> id;
   final Value<String> title;
   final Value<bool> isCompleted;
-  final Value<int> rowid;
   const TodosCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.isCompleted = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   TodosCompanion.insert({
-    required int id,
+    this.id = const Value.absent(),
     required String title,
-    required bool isCompleted,
-    this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       title = Value(title),
-       isCompleted = Value(isCompleted);
+    this.isCompleted = const Value.absent(),
+  }) : title = Value(title);
   static Insertable<Todo> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<bool>? isCompleted,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (isCompleted != null) 'is_completed': isCompleted,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -228,13 +222,11 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     Value<int>? id,
     Value<String>? title,
     Value<bool>? isCompleted,
-    Value<int>? rowid,
   }) {
     return TodosCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       isCompleted: isCompleted ?? this.isCompleted,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -250,9 +242,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     if (isCompleted.present) {
       map['is_completed'] = Variable<bool>(isCompleted.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -261,8 +250,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     return (StringBuffer('TodosCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('isCompleted: $isCompleted, ')
-          ..write('rowid: $rowid')
+          ..write('isCompleted: $isCompleted')
           ..write(')'))
         .toString();
   }
@@ -280,16 +268,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 }
 
 typedef $$TodosTableCreateCompanionBuilder = TodosCompanion Function({
-  required int id,
+  Value<int> id,
   required String title,
-  required bool isCompleted,
-  Value<int> rowid,
+  Value<bool> isCompleted,
 });
 typedef $$TodosTableUpdateCompanionBuilder = TodosCompanion Function({
   Value<int> id,
   Value<String> title,
   Value<bool> isCompleted,
-  Value<int> rowid,
 });
 
 class $$TodosTableFilterComposer extends Composer<_$AppDatabase, $TodosTable> {
@@ -388,29 +374,20 @@ class $$TodosTableTableManager
               $$TodosTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TodosTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                Value<String> title = const Value.absent(),
-                Value<bool> isCompleted = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => TodosCompanion(
-                id: id,
-                title: title,
-                isCompleted: isCompleted,
-                rowid: rowid,
-              ),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> title = const Value.absent(),
+            Value<bool> isCompleted = const Value.absent(),
+          }) => TodosCompanion(id: id, title: title, isCompleted: isCompleted),
           createCompanionCallback:
               ({
-                required int id,
+                Value<int> id = const Value.absent(),
                 required String title,
-                required bool isCompleted,
-                Value<int> rowid = const Value.absent(),
+                Value<bool> isCompleted = const Value.absent(),
               }) => TodosCompanion.insert(
                 id: id,
                 title: title,
                 isCompleted: isCompleted,
-                rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map(

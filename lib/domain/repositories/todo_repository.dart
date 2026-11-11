@@ -1,8 +1,8 @@
+import 'package:todolist_learn/core/result/result.dart';
 import 'package:todolist_learn/domain/entities/todo_entity.dart';
 
 abstract interface class TodoRepository {
-  Future<List<TodoEntity>> fetchTodos();
-  Future<void> addTodo(TodoEntity todo);
-  Future<void> deleteTodo(int id);
-  Future<void> toggleStatus(int id, bool isCompleted);
+  Future<Result<List<TodoEntity>>> getTodos();
+  Future<Result<void>> saveTodo(TodoEntity todo);
+  Future<Result<void>> deleteTodo(int id);
 }
