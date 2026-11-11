@@ -7,9 +7,7 @@ import 'package:todolist_learn/database/app_database.dart';
 import 'package:todolist_learn/domain/entities/todo_entity.dart';
 import 'package:todolist_learn/domain/repositories/todo_repository.dart';
 
-class TodoRepositoryImpl(this.db) implements TodoRepository {
-  final AppDatabase db;
-
+class TodoRepositoryImpl(final AppDatabase db) implements TodoRepository {
   @override
   Future<Result<void>> deleteTodo(int id) async {
     try {

@@ -13,16 +13,11 @@ part 'todo_cubit.freezed.dart';
 
 class TodoCubit(
   super.initialState, {
-  required this._fetchTodoUseCase,
-  required this._addTodoUseCase,
-  required this._deleteTodoUseCase,
-  required this._updateTodoUseCase,
+  required final FetchTodoUseCase _fetchTodoUseCase,
+  required final AddTodoUseCase _addTodoUseCase,
+  required final DeleteTodoUseCase _deleteTodoUseCase,
+  required final UpdateTodoUseCase _updateTodoUseCase,
 }) extends Cubit<TodoState> {
-  final FetchTodoUseCase _fetchTodoUseCase;
-  final AddTodoUseCase _addTodoUseCase;
-  final DeleteTodoUseCase _deleteTodoUseCase;
-  final UpdateTodoUseCase _updateTodoUseCase;
-
   void loading() {
     TodoState.loading();
   }
