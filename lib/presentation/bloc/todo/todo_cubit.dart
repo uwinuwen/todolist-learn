@@ -32,7 +32,10 @@ class TodoCubit({
   }
 
   void addTodo(String title) async {
-    final newTodo = TodoEntity(title: title);
+    final newTodo = TodoEntity(
+      id: DateTime.now().millisecondsSinceEpoch,
+      title: title,
+    );
     final result = await _addTodoUseCase(newTodo);
     result.when(
       success: (_) => null,
