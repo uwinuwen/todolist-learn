@@ -19,19 +19,16 @@ class TodoCubit({
 }) extends Cubit<TodoState> {
   this : super(const TodoState.initial());
 
-  void fetchTodos() async {
-    if (state is _Initial) {
-      TodoState.loading();
-    }
-    // const Duration(seconds: 3);
+  Future<void> fetchTodos() async {
+    emit(TodoState.loading());
     final todos = await _fetchTodoUseCase();
     todos.when(
-      success: (todos) => TodoState.loaded(todos),
-      failure: (error) => TodoState.error(error.message),
+      success: (todos) => emit(TodoState.loaded(todos)),
+      failure: (error) => emit(TodoState.error(error.message)),
     );
   }
 
-  void addTodo(String title) async {
+  Future<void> addTodo(String title) async {
     final newTodo = TodoEntity(
       id: DateTime.now().millisecondsSinceEpoch,
       title: title,
@@ -39,26 +36,26 @@ class TodoCubit({
     final result = await _addTodoUseCase(newTodo);
     result.when(
       success: (_) => null,
-      failure: (error) => TodoState.error(error.message),
+      failure: (error) => emit(TodoState.error(error.message)),
     );
-    fetchTodos();
+    await fetchTodos();
   }
 
-  void deleteTodo(int id) async {
+  Future<void> deleteTodo(int id) async {
     final result = await _deleteTodoUseCase(id);
     result.when(
       success: (_) => null,
-      failure: (error) => TodoState.error(error.message),
+      failure: (error) => emit(TodoState.error(error.message)),
     );
-    fetchTodos();
+    await fetchTodos();
   }
 
-  void toggleTodo(TodoEntity todo) async {
+  Future<void> toggleTodo(TodoEntity todo) async {
     final result = await _updateTodoUseCase(todo);
     result.when(
       success: (_) => null,
-      failure: (error) => TodoState.error(error.message),
+      failure: (error) => emit(TodoState.error(error.message)),
     );
-    fetchTodos();
+    await fetchTodos();
   }
 }
